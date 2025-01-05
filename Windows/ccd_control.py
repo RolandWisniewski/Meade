@@ -168,10 +168,11 @@ def get_frame(exptime, filt):
     plt.axis('off')
     
     list_of_files = glob.glob(f'{config_data["image_path"]}/*.png')
-    latest_file = max(list_of_files, key=os.path.getctime)
-    for file in list_of_files:
-        if file != latest_file:
-            os.remove(file)
+    if len(list_of_files) >= 1:
+        latest_file = max(list_of_files, key=os.path.getctime)
+        for file in list_of_files:
+            if file != latest_file:
+                os.remove(file)
 
     plt.savefig(f'{config_data["image_path"]}/test_{save_time}.png', bbox_inches='tight', pad_inches=0)
     send_data(filters_list, temp)
