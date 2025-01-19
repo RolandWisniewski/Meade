@@ -49,6 +49,8 @@ def date_time(hdr):
     exp_time = hdr['EXPTIME']
     time += dt.timedelta(seconds=exp_time)
     time = str(time.time())
+    if '.' not in time:
+        time += '.000000'
     return f'{date}T{time}'
 
 
@@ -87,8 +89,8 @@ class Handler(PatternMatchingEventHandler):
         send_data(link_create, r)
 
 
-redis_activate(r)
 if __name__ == "__main__":
+    redis_activate(r)
     observer = Observer()
     event_handler = Handler(
         patterns=[config_data["patterns"]],
