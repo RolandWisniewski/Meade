@@ -108,10 +108,10 @@ def decide(date_time_obs, can_obs, exptime):
     if int(exptime) <= 0:
         exptime = 1
     if result <= exptime and can_obs:
-        print('decide=1')
+        print('decide=1', end='\r')
         return True
     else:
-        print("decide=0")
+        print("decide=0", end='\r')
         return False
 
 
