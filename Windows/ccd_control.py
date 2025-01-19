@@ -76,6 +76,18 @@ def create_folder(FOLDER_PATH):
     return path
 
 
+def redis_check(r):
+    wait = True
+    while wait:
+        try:
+            r.ping() == True
+            print('\x1b[2K')
+            print('\033[1A'+"Redis connection successful")
+            wait = False
+        except redis.exceptions.ConnectionError:
+            print("Waiting for connection to Redis", end='\r')
+
+
 def get_data(name, keys):
     info_list = r.get(name)
     dictionary = dict.fromkeys(keys)
@@ -199,6 +211,7 @@ def get_value(data_key, default_value):
 
 if __name__ == "__main__":
     print("Starting up...")
+    redis_check(r)
 
     connect(camera)
     connect(filter_wheel)
