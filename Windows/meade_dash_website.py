@@ -88,7 +88,8 @@ app.layout = html.Div([
             dcc.Input(id='input-temp', type='number', placeholder='change temp', min=-20, max=100)
         ]),
         html.Div([
-            html.Button('Submit', id='submit-but', n_clicks=0), 
+            html.Button('Submit', id='submit-but', n_clicks=0),
+            html.Button('Reset', id='reset-but', n_clicks=0),
             html.Div(id='container-button-timestamp')
         ]), 
     ], className='column2'),
@@ -152,6 +153,7 @@ def update_temp(value):
     Output('container-button-timestamp', 'children'), 
     [
         Input('submit-but', 'n_clicks'),
+        Input('reset-but', 'n_clicks'),
         Input('input-exp', 'n_submit'),
         Input('input-temp', 'n_submit'),
     ],
@@ -161,12 +163,19 @@ def update_temp(value):
         State('input-temp', 'value')
     ],
 )
-def button_click(n_clicks, n_submit_exp, n_submit_temp, exp_time, filter_pos, temp):
+def button_click(sub_clicks, res_clicks, n_submit_exp, n_submit_temp, exp_time, filter_pos, temp):
     triggered = ctx.triggered_id
     msg = 'Press to change values'
     if triggered == 'submit-but' or triggered in ['input-exp', 'input-temp']:
         msg = 'Changing values...'
         send_data(exp_time, filter_pos, temp) 
+    if triggered == "reset-but":
+        msg = 'Resettnig values...'
+        data1 = get_data(info_list1, keys1)
+        exp_time = data1['exptime']
+        filter_pos = config_data["filters_list"].split(",")[0].strip("[]'\"")
+        temp = -10
+        send_data(exp_time, filter_pos, temp)
     return [
         html.Div(msg), 
         html.Script("window.location.reload();")
