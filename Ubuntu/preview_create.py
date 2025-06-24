@@ -21,7 +21,7 @@ data = np.random.rand(1024, 1024)
 
 header = fits.Header()
 header['OBJECT'] = "bias"
-header['OBSERVER'] = "WO"
+header['OBSERVER'] = "RW"
 header['EXPTIME'] = 10
 header['FILTER'] = "R"
 header['DATE-OBS'] = str(datetime.now().date())
